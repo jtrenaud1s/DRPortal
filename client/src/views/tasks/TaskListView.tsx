@@ -1,60 +1,62 @@
 import React from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import CommitteeList from "../../components/CommitteeList";
 import TaskList from "../../components/TaskList";
+import TaskStatRow from "../../components/TaskStatRow";
 import MainLayout from "../../layout/MainLayout";
-import { useFetchAllTasksQuery } from "../../services/apiService";
+import { Committee } from "../../models/committee";
+import { Task } from "../../models/task";
+import { User } from "../../models/user";
+import {
+  useFetchAllCommitteesQuery,
+  useFetchAllTasksQuery,
+  useFetchAllUsersQuery,
+} from "../../services/apiService";
 import { useAppSelector } from "../../store";
 
 const TaskListView = () => {
   const { data, error, isLoading } = useFetchAllTasksQuery();
-  const userId = useAppSelector(state => state.auth.currentUser)
+  const {
+    data: committees,
+    error: cError,
+    isLoading: cIsLoading,
+  } = useFetchAllCommitteesQuery();
+  const {
+    data: users,
+    error: uError,
+    isLoading: uIsLoading,
+  } = useFetchAllUsersQuery();
+
+  const user = useAppSelector((state) => state.auth.currentUser) as User;
+  const userTasks = data?.filter((task) => task.assignees.includes(user.id!));
+
+  const stats = [
+    { title: "All Tasks", value: data?.length },
+    { title: "Your Tasks", value: userTasks?.length },
+    { title: "Open Tasks", value: data?.length },
+    { title: "Overdue Tasks", value: data?.length },
+  ];
   return (
     <MainLayout>
-      {error ? (
+      {error || cError || uError ? (
         <>error</>
-      ) : isLoading ? (
+      ) : isLoading || cIsLoading || uIsLoading ? (
         <>Loading...</>
-      ) : data ? (
+      ) : data && committees && users ? (
         <React.Fragment>
-          <Row className="mt-4">
-            <Col>
-              <Card>
-                <Card.Body>
-                  <span className="h5">All Tasks</span>
-                  <br />
-                  <span>{data.length}</span>
-                </Card.Body>
-              </Card>
+          <Row>
+            <Col lg={9}>
+              <TaskStatRow stats={stats} />
+              <TaskList
+                tasks={data as Task[]}
+                committees={committees as Committee[]}
+                users={users as User[]}
+              />
             </Col>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <span className="h5">Your Tasks</span>
-                  <br />
-                  <span>{data.length}</span>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <span className="h5">Incomplete Tasks</span>
-                  <br />
-                  <span>{data.length}</span>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <span className="h5">Completed Tasks</span>
-                  <br />
-                  <span>{data.length}</span>
-                </Card.Body>
-              </Card>
+            <Col lg={3}>
+              <CommitteeList />
             </Col>
           </Row>
-          <TaskList tasks={data} />
         </React.Fragment>
       ) : null}
     </MainLayout>

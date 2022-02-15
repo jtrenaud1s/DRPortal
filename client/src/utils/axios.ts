@@ -28,11 +28,8 @@ const Axios = axios.create({
 Axios.interceptors.request.use(
   (config) => {
     if (store!.getState().auth.accessToken) {
-      console.log("request interceptor: add token to headers");
       config.headers!["Authorization"] =
         "JWT " + store!.getState().auth.accessToken;
-    } else {
-      console.log("No access token available");
     }
     return config;
   },
@@ -121,10 +118,8 @@ export const axiosBaseQuery =
     unknown
   > =>
   async ({ url, method, data }) => {
-    console.log("Using axios in query")
     try {
       const result = await Axios({ url: baseUrl + url, method, data });
-      console.log(result.request.headers)
       return { data: result.data };
     } catch (axiosError) {
       let err = axiosError as AxiosError;

@@ -1,11 +1,18 @@
-import { User } from "./user";
-
 export interface Task {
   id: number;
   name: string;
-  creator: User | number;
+  creator: number;
   description: string;
   created: Date;
   updated: Date;
-  assignees: User[] | number[];
+  assignees: number[];
+  committee: number;
+}
+
+export interface TaskDataTableView {
+  name: string;
+  created: Date | string;
+  updated: Date | string;
+  assignees: string[] | string;
+  committee: string;
 }

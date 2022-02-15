@@ -18,7 +18,6 @@ function App() {
     dispatch(refreshPending());
 
     const refreshToken = localStorage.getItem("refresh_token");
-    console.log("Saved refresh token: ", refreshToken);
 
     if (refreshToken === null) {
       console.log("Refresh token is not available");
@@ -31,9 +30,7 @@ function App() {
       if (tokenParts.exp! > now) {
         Axios.post("/auth/refresh/", { refresh: refreshToken })
           .then((response) => {
-            console.log(response.data.access);
             dispatch(refreshSuccess(response.data.access));
-            console.log("setting token", response.data);
             setLoading(false);
           })
           .catch((err) => {
