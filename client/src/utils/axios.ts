@@ -1,4 +1,5 @@
-import axios from "axios";
+import { BaseQueryFn } from "@reduxjs/toolkit/dist/query/react";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
   refreshFailed,
   refreshPending,
@@ -30,7 +31,7 @@ Axios.interceptors.request.use(
       config.headers!["Authorization"] =
         "JWT " + store!.getState().auth.accessToken;
     } else {
-      console.log("No access token available")
+      console.log("No access token available");
     }
     return config;
   },
@@ -91,17 +92,45 @@ Axios.interceptors.response.use(
             });
         } else {
           console.log("Refresh token is expired", tokenParts.exp, now);
-          store!.dispatch(refreshFailed("Refresh Token Expired"));
+          store!.dispatch(
+            refreshFailed("You've been signed out due to inactivity")
+          );
           window.location.href = "/login/";
         }
       } else {
         console.log("Refresh token is not available");
-        store!.dispatch(refreshFailed("Refresh Token Non-existant"));
+        store!.dispatch(refreshFailed("Please Sign In"));
         window.location.href = "/login/";
       }
     }
     return Promise.reject(error);
   }
 );
+
+export const axiosBaseQuery =
+  (
+    { baseUrl }: { baseUrl: string } = { baseUrl: "" }
+  ): BaseQueryFn<
+    {
+      url: string;
+      method: AxiosRequestConfig["method"];
+      data?: AxiosRequestConfig["data"];
+    },
+    unknown,
+    unknown
+  > =>
+  async ({ url, method, data }) => {
+    console.log("Using axios in query")
+    try {
+      const result = await Axios({ url: baseUrl + url, method, data });
+      console.log(result.request.headers)
+      return { data: result.data };
+    } catch (axiosError) {
+      let err = axiosError as AxiosError;
+      return {
+        error: { status: err.response?.status, data: err.response?.data },
+      };
+    }
+  };
 
 export default Axios;

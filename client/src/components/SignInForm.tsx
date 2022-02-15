@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { TokenPair, UserCredentials } from "../../types";
-import Axios from "../../utils/axios";
+import Axios from "../utils/axios";
 
-import { loginFailed, loginPending, loginSuccess } from ".";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { loginFailed, loginPending, loginSuccess } from "../features/auth";
+import { useAppDispatch, useAppSelector } from "../store";
+import { TokenPair, UserCredentials } from "../models/user";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(state => state.auth.isLoading)
+  const isLoading = useAppSelector((state) => state.auth.isLoading);
+  const message = useAppSelector((state) => state.auth.error);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,17 +26,12 @@ const SignInForm = () => {
     };
 
     const response = await Axios.post("auth/token/", credentials);
-
     const tokens: TokenPair = response.data;
 
-    if (response.status === 200) {
-      console.log(tokens);
-      dispatch(loginSuccess(tokens));
-      navigate("/");
-    } else {
-      setMessage(response.data);
-      dispatch(loginFailed(response.data));
-    }
+    if (response.status !== 200) dispatch(loginFailed(response.data));
+
+    dispatch(loginSuccess(tokens));
+    navigate("/");
   };
 
   return (
@@ -79,15 +75,16 @@ const SignInForm = () => {
                 className="w-100"
                 type="submit"
                 variant="primary">
-                Sign In
+                {isLoading && <Spinner size="sm" animation="border" />} Sign In
               </Button>
             </Col>
           </Row>
-          
         </Form>
-        <small className="text-muted">
-          Need an account? <Link to="/signup">Sign Up</Link>
-        </small>
+        <div className="text-center mt-2">
+          <small className="text-muted">
+            Need an account? <Link to="/signup">Sign Up</Link>
+          </small>
+        </div>
       </Card.Body>
     </Card>
   );

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import TaskListView from "./views/TaskListView";
+import TaskListView from "./views/tasks/TaskListView";
 import SignUpView from "./views/auth/SignUpView";
 import SignInView from "./views/auth/SignInView";
-import Protect from "./features/auth/Protect";
+import Protect from "./components/Protect";
 import { useAppDispatch } from "./store";
 import { refreshFailed, refreshPending, refreshSuccess } from "./features/auth";
 import Axios from "./utils/axios";
@@ -21,7 +21,7 @@ function App() {
 
     if (refreshToken === null) {
       console.log("Refresh token is not available");
-      dispatch(refreshFailed("Refresh Token Non-existant"));
+      dispatch(refreshFailed(""));
       setLoading(false);
     } else {
       const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
@@ -30,6 +30,7 @@ function App() {
       if (tokenParts.exp > now) {
         Axios.post("/auth/refresh/", { refresh: refreshToken })
           .then((response) => {
+            console.log(response.data.access)
             dispatch(refreshSuccess(response.data.access));
             console.log("setting token", response.data);
             setLoading(false);
@@ -41,7 +42,7 @@ function App() {
           });
       } else {
         console.log("Refresh token is expired", tokenParts.exp, now);
-        dispatch(refreshFailed("Refresh Token Expired"));
+        dispatch(refreshFailed("You've been signed out due to inactivity"));
         setLoading(false);
       }
     }

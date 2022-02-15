@@ -3,18 +3,29 @@ import { createSlice, Middleware } from "@reduxjs/toolkit";
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
-      isLoading: false,
-      currentUser: {},
-      isAuthenticated: false,
-      accessToken: "",
-      error: "",
+    isLoading: false,
+    currentUser: {},
+    isAuthenticated: false,
+    accessToken: "",
+    error: "",
   },
   reducers: {
-    logout: (state) => {
+    signupPending: (state) => {
+      state.isLoading = true
+    },
+    signupSuccess: (state) => {
       state.isLoading = false
-      state.isAuthenticated = false
-      state.accessToken = ""
-      state.currentUser = {}
+      state.error = ""
+    },
+    signupFailed: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload
+    },
+    logout: (state) => {
+      state.isLoading = false;
+      state.isAuthenticated = false;
+      state.accessToken = "";
+      state.currentUser = {};
     },
     loginPending: (state) => {
       state.isLoading = true;
@@ -22,7 +33,7 @@ export const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.isLoading = false;
       //state.currentUser = action.payload.user;
-      state.accessToken = action.payload.access
+      state.accessToken = action.payload.access;
       state.isAuthenticated = true;
       state.error = "";
     },
@@ -36,7 +47,7 @@ export const authSlice = createSlice({
     },
     refreshSuccess: (state, action) => {
       state.isLoading = false;
-      state.accessToken = action.payload.access;
+      state.accessToken = action.payload;
       state.isAuthenticated = true;
     },
     refreshFailed: (state, action) => {
@@ -61,7 +72,7 @@ export const authMiddleware: Middleware = (store) => (next) => (action) => {
 
 const { reducer, actions } = authSlice;
 
-export const { logout, loginPending, loginSuccess, loginFailed, refreshPending, refreshSuccess, refreshFailed } =
+export const {signupFailed, signupPending, signupSuccess, logout, loginPending, loginSuccess, loginFailed, refreshPending, refreshSuccess, refreshFailed } =
   actions;
 
 export default reducer;

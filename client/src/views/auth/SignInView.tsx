@@ -1,11 +1,11 @@
 import React from 'react'
-import SignInBox from '../../features/auth/SignInForm';
+import SignInForm from '../../components/SignInForm';
 import FullscreenCenteredLayout from '../../layout/FullscreenCenteredLayout';
 
 const SignInView = () => {
   return (
     <FullscreenCenteredLayout>
-      <SignInBox />
+      <SignInForm />
     </FullscreenCenteredLayout>
   );
 }
