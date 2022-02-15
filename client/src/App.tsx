@@ -8,6 +8,7 @@ import { useAppDispatch } from "./store";
 import { refreshFailed, refreshPending, refreshSuccess } from "./features/auth";
 import Axios from "./utils/axios";
 import { Spinner } from "react-bootstrap";
+import jwt_decode, { JwtPayload } from "jwt-decode";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -24,13 +25,13 @@ function App() {
       dispatch(refreshFailed(""));
       setLoading(false);
     } else {
-      const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
+      const tokenParts: JwtPayload = jwt_decode(refreshToken);
       const now = Math.ceil(Date.now() / 1000);
 
       if (tokenParts.exp > now) {
         Axios.post("/auth/refresh/", { refresh: refreshToken })
           .then((response) => {
-            console.log(response.data.access)
+            console.log(response.data.access);
             dispatch(refreshSuccess(response.data.access));
             console.log("setting token", response.data);
             setLoading(false);

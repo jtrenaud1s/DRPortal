@@ -6,6 +6,7 @@ import {
   refreshSuccess,
 } from "../features/auth";
 import { StoreType } from "../store";
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 const baseURL = "http://localhost:8000/api/";
 
@@ -72,11 +73,11 @@ Axios.interceptors.response.use(
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (refreshToken) {
-        const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
+        const tokenParts: JwtPayload = jwt_decode(refreshToken)
 
         const now = Math.ceil(Date.now() / 1000);
 
-        if (tokenParts.exp > now) {
+        if (tokenParts.exp! > now) {
           store!.dispatch(refreshPending());
           return Axios.post("/auth/refresh/", { refresh: refreshToken })
             .then((response) => {
