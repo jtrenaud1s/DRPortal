@@ -1,5 +1,5 @@
 import React from 'react'
-import SignInForm from '../../components/SignInForm';
+import SignInForm from '../../components/auth/SignInForm';
 import FullscreenCenteredLayout from '../../layout/FullscreenCenteredLayout';
 
 const SignInView = () => {

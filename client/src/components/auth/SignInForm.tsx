@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Alert, Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Axios from "../utils/axios";
+import Axios from "../../utils/axios";
 
-import { loginFailed, loginPending, loginSuccess } from "../features/auth";
-import { useAppDispatch, useAppSelector } from "../store";
-import { TokenPair, UserCredentials } from "../models/user";
+import { loginFailed, loginPending, loginSuccess } from "../../features/auth";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { TokenPair, UserCredentials } from "../../models/user";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");

@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import CommitteeList from "../../components/CommitteeList";
+import UserCommitteeSidebar from "../../components/UserCommitteeSidebar";
 import TaskList from "../../components/TaskList";
 import TaskStatRow from "../../components/TaskStatRow";
 import MainLayout from "../../layout/MainLayout";
@@ -54,7 +54,7 @@ const TaskListView = () => {
               />
             </Col>
             <Col lg={3}>
-              <CommitteeList />
+              <UserCommitteeSidebar />
             </Col>
           </Row>
         </React.Fragment>

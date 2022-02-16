@@ -3,12 +3,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TaskListView from "./views/tasks/TaskListView";
 import SignUpView from "./views/auth/SignUpView";
 import SignInView from "./views/auth/SignInView";
-import Protect from "./components/Protect";
+import Protect from "./components/auth/Protect";
 import { useAppDispatch } from "./store";
 import { refreshFailed, refreshPending, refreshSuccess } from "./features/auth";
 import Axios from "./utils/axios";
 import { Spinner } from "react-bootstrap";
 import jwt_decode, { JwtPayload } from "jwt-decode";
+import CommitteeListView from "./views/committees/CommitteeListView";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -71,6 +72,14 @@ function App() {
             element={
               <Protect inverse>
                 <SignInView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/committees"
+            element={
+              <Protect>
+                <CommitteeListView />
               </Protect>
             }
           />

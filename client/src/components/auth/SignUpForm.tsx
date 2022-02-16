@@ -10,10 +10,10 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { signupFailed, signupPending, signupSuccess } from "../features/auth";
-import { UserWithPassword } from "../models/user";
-import { useAppDispatch, useAppSelector } from "../store";
-import Axios from "../utils/axios";
+import { signupFailed, signupPending, signupSuccess } from "../../features/auth";
+import { UserWithPassword } from "../../models/user";
+import { useAppDispatch, useAppSelector } from "../../store";
+import Axios from "../../utils/axios";
 
 const SignUpForm = () => {
   const [email, setEmail] = useState("");

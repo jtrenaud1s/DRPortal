@@ -20,6 +20,9 @@ const NavLinks = () => {
       <Nav.Link as={NavLink} to="/">
         Home
       </Nav.Link>
+      <Nav.Link as={NavLink} to="/committees">
+        Committees
+      </Nav.Link>
       <NavDropdown
         title={user.first_name + " " + user.last_name}
         id="user-dropdown">
@@ -32,7 +35,7 @@ const NavLinks = () => {
 const Header = () => {
   return (
     <Navbar collapseOnSelect bg="light" expand="lg" className="mb-4">
-      <Container fluid>
+      <Container>
         <Navbar.Brand href="#">Theta Xi Portal</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar" />
         <Navbar.Collapse aria-label="navbar">

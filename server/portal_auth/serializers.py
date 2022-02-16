@@ -4,8 +4,6 @@ from portal_auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        min_length=6, write_only=True, required=True)
     class Meta:
         model = User
         exclude = ['password']

@@ -5,7 +5,7 @@ from portal_auth.models import User
 class Committee(models.Model):
     name = models.CharField(max_length=255)
     head = models.ForeignKey(
-        User, on_delete=models.PROTECT, related_name="committee_head", null=True, blank=True)
+        User, on_delete=models.DO_NOTHING, related_name="committee_head", null=True, blank=True)
     members = models.ManyToManyField(User, related_name="committee_members", blank=True)
 
     def __str__(self):
@@ -14,13 +14,13 @@ class Committee(models.Model):
 
 class Task(models.Model):
     committee = models.ForeignKey(
-        Committee, on_delete=models.PROTECT, null=True, blank=True)
+        Committee, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255)
     description = models.TextField(null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     creator = models.ForeignKey(
-        User, on_delete=models.PROTECT, related_name="task_creator")
+        User, on_delete=models.DO_NOTHING, related_name="task_creator")
     assignees = models.ManyToManyField(User, related_name="task_assignees", blank=True)
 
     class Meta:
