@@ -1,65 +1,33 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
-import UserCommitteeSidebar from "../../components/UserCommitteeSidebar";
+import { Alert, Button } from "react-bootstrap";
 import TaskList from "../../components/TaskList";
-import TaskStatRow from "../../components/TaskStatRow";
-import MainLayout from "../../layout/MainLayout";
-import { Committee } from "../../models/committee";
-import { Task } from "../../models/task";
-import { User } from "../../models/user";
-import {
-  useFetchAllCommitteesQuery,
-  useFetchAllTasksQuery,
-  useFetchAllUsersQuery,
-} from "../../services/apiService";
-import { useAppSelector } from "../../store";
+import { useFetchAllTasksQuery } from "../../services/apiService";
+import Loadscreen from "../../components/Loadscreen";
+import { LinkContainer } from "react-router-bootstrap";
+import MainLayoutWithToolbar from "../../layout/MainLayoutWithToolbar";
 
 const TaskListView = () => {
-  const { data, error, isLoading } = useFetchAllTasksQuery();
-  const {
-    data: committees,
-    error: cError,
-    isLoading: cIsLoading,
-  } = useFetchAllCommitteesQuery();
-  const {
-    data: users,
-    error: uError,
-    isLoading: uIsLoading,
-  } = useFetchAllUsersQuery();
+  const { data: tasks, error, isLoading } = useFetchAllTasksQuery();
 
-  const user = useAppSelector((state) => state.auth.currentUser) as User;
-  const userTasks = data?.filter((task) => task.assignees.includes(user.id!));
+  const newTaskButton = (
+    <LinkContainer to="">
+      <Button
+        size="sm"
+        variant="default"
+        className="border-end border-start rounded-0">
+        Create Task
+      </Button>
+    </LinkContainer>
+  );
 
-  const stats = [
-    { title: "All Tasks", value: data?.length },
-    { title: "Your Tasks", value: userTasks?.length },
-    { title: "Open Tasks", value: data?.length },
-    { title: "Overdue Tasks", value: data?.length },
-  ];
+  if (isLoading) return <Loadscreen />;
+
   return (
-    <MainLayout>
-      {error || cError || uError ? (
-        <>error</>
-      ) : isLoading || cIsLoading || uIsLoading ? (
-        <>Loading...</>
-      ) : data && committees && users ? (
-        <React.Fragment>
-          <Row>
-            <Col lg={9}>
-              <TaskStatRow stats={stats} />
-              <TaskList
-                tasks={data as Task[]}
-                committees={committees as Committee[]}
-                users={users as User[]}
-              />
-            </Col>
-            <Col lg={3}>
-              <UserCommitteeSidebar />
-            </Col>
-          </Row>
-        </React.Fragment>
-      ) : null}
-    </MainLayout>
+    <MainLayoutWithToolbar toolbarContent={newTaskButton}>
+      {error && <Alert>{`${error}`}</Alert>}
+
+      <TaskList tasks={tasks || []} />
+    </MainLayoutWithToolbar>
   );
 };
 

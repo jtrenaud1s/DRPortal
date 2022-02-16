@@ -10,22 +10,31 @@ const UserCommitteeSidebar = () => {
   const { data, error, isLoading } = useFetchAllCommitteesQuery();
   const userCommittees = data?.filter(
     (committee) =>
-      committee.head === user.id! || committee.members.includes(user.id!)
+      committee.head.id === user.id! ||
+      committee.members.map((member) => member.id).includes(user.id!)
   ) as Committee[];
   return (
-    <Card>
+    <Card className="mb-3 sticky-lg-top-margin">
       <Card.Header>Your Committees</Card.Header>
-      {error ? (
-        <>{error}</>
-      ) : isLoading ? (
-        <Spinner animation="border" color="azure" />
-      ) : data ? (
+      {isLoading ? (
+        <Card.Body className="d-flex justify-content-center align-items-center">
+          <Spinner animation="border" color="azure" />
+        </Card.Body>
+      ) : error ? (
+        <Card.Body className="d-flex justify-content-center align-items-center">
+          {`${error}`}
+        </Card.Body>
+      ) : (
+        <></>
+      )}
+
+      {data && (
         <ListGroup variant="flush">
           {userCommittees.map((committee, id) => (
             <ListGroup.Item key={id}>{committee.name}</ListGroup.Item>
           ))}
         </ListGroup>
-      ) : null}
+      )}
     </Card>
   );
 };

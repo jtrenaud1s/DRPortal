@@ -22,6 +22,7 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [initiationNumber, setInitiationNumber] = useState(0)
   const working = useAppSelector((state) => state.auth.isLoading);
   const message = useAppSelector((state) => state.auth.error);
   const dispatch = useAppDispatch();
@@ -40,6 +41,7 @@ const SignUpForm = () => {
       password: password,
       first_name: firstName,
       last_name: lastName,
+      initiation_number: initiationNumber,
     };
 
     const response = await Axios.post("auth/register/", user);
@@ -134,6 +136,13 @@ const SignUpForm = () => {
                     placeholder="Last Name"
                     required
                   />
+                  <Form.Control
+                    type="number"
+                    onChange={(e) => setInitiationNumber(+e.target.value)}
+                    value={lastName}
+                    placeholder="Last Name"
+                    required
+                  />
                 </InputGroup>
               </Form.Group>
             </Col>
@@ -145,7 +154,7 @@ const SignUpForm = () => {
                 className="w-100"
                 type="submit"
                 variant="primary">
-                {working && <Spinner size="sm" animation="border"/>} Sign Up
+                {working && <Spinner size="sm" animation="border" />} Sign Up
               </Button>
             </Col>
           </Row>

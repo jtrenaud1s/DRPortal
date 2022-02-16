@@ -4,6 +4,7 @@ export interface User {
   email: string;
   first_name: string;
   last_name: string;
+  initiation_number: number;
   is_superuser?: boolean;
   is_staff?: boolean;
   last_login?: Date;

@@ -1,18 +1,13 @@
+import { Committee } from "./committee";
+import { User } from "./user";
+
 export interface Task {
   id: number;
   name: string;
-  creator: number;
+  creator: User;
   description: string;
   created: Date;
   updated: Date;
-  assignees: number[];
-  committee: number;
-}
-
-export interface TaskDataTableView {
-  name: string;
-  created: Date | string;
-  updated: Date | string;
-  assignees: string[] | string;
-  committee: string;
+  assignees: User[];
+  committee: Committee
 }

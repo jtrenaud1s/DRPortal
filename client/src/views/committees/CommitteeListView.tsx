@@ -1,24 +1,15 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import {
   useFetchAllCommitteesQuery,
-  useFetchAllUsersQuery,
 } from "../../services/apiService";
 import CommitteeList from "../../components/CommitteeList";
 import MainLayoutWithToolbar from "../../layout/MainLayoutWithToolbar";
 import { LinkContainer } from "react-router-bootstrap";
+import Loadscreen from "../../components/Loadscreen";
 
 const CommitteeListView = () => {
-  const {
-    data: committees,
-    error: cError,
-    isLoading: cIsLoading,
-  } = useFetchAllCommitteesQuery();
-  const {
-    data: users,
-    error: uError,
-    isLoading: uIsLoading,
-  } = useFetchAllUsersQuery();
+  const { data: committees, error, isLoading } = useFetchAllCommitteesQuery();
 
   const newCommitteeButton = (
     <LinkContainer to="">
@@ -31,17 +22,13 @@ const CommitteeListView = () => {
     </LinkContainer>
   );
 
+  if (isLoading) return <Loadscreen />;
+
   return (
     <MainLayoutWithToolbar toolbarContent={newCommitteeButton}>
-      {cError || uError ? (
-        <>error</>
-      ) : cIsLoading || uIsLoading ? (
-        <>Loading...</>
-      ) : committees && users ? (
-        <React.Fragment>
-          <CommitteeList users={users} committees={committees} />
-        </React.Fragment>
-      ) : null}
+      {error && <Alert>{`${error}`}</Alert>}
+
+      <CommitteeList committees={committees || []} />
     </MainLayoutWithToolbar>
   );
 };
