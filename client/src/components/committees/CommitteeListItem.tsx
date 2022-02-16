@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, Card } from "react-bootstrap";
 import { EyeFill, TrashFill } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
-import { Committee } from "../models/committee";
+import { Committee } from "../../models/committee";
 
 interface ICommitteeListItemProps {
   committee: Committee;

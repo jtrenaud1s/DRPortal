@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, ListGroup, Spinner } from "react-bootstrap";
-import { Committee } from "../models/committee";
-import { User } from "../models/user";
-import { useFetchAllCommitteesQuery } from "../services/apiService";
-import { useAppSelector } from "../store";
+import { Committee } from "../../models/committee";
+import { User } from "../../models/user";
+import { useFetchAllCommitteesQuery } from "../../services/apiService";
+import { useAppSelector } from "../../store";
 
 const UserCommitteeSidebar = () => {
   const user = useAppSelector((state) => state.auth.currentUser) as User;

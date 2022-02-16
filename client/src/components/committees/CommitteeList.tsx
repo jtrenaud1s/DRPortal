@@ -1,5 +1,5 @@
 import React from "react";
-import { Committee } from "../models/committee";
+import { Committee } from "../../models/committee";
 import CommitteeListItem from "./CommitteeListItem";
 
 interface ICommitteesProps {

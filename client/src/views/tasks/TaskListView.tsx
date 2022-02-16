@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert, Button } from "react-bootstrap";
-import TaskList from "../../components/TaskList";
+import TaskList from "../../components/tasks/TaskList";
 import { useFetchAllTasksQuery } from "../../services/apiService";
 import Loadscreen from "../../components/Loadscreen";
 import { LinkContainer } from "react-router-bootstrap";

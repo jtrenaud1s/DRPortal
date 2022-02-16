@@ -1,5 +1,5 @@
 import React from "react";
-import { Task } from "../models/task";
+import { Task } from "../../models/task";
 import TaskListItem from "./TaskListItem";
 
 interface ITasksProps {

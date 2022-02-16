@@ -3,7 +3,7 @@ import { Alert, Button } from "react-bootstrap";
 import {
   useFetchAllCommitteesQuery,
 } from "../../services/apiService";
-import CommitteeList from "../../components/CommitteeList";
+import CommitteeList from "../../components/committees/CommitteeList";
 import MainLayoutWithToolbar from "../../layout/MainLayoutWithToolbar";
 import { LinkContainer } from "react-router-bootstrap";
 import Loadscreen from "../../components/Loadscreen";

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, Card } from "react-bootstrap";
 import { EyeFill, TrashFill } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
-import { Task } from "../models/task";
+import { Task } from "../../models/task";
 
 interface ITaskListItemProps {
   task: Task;

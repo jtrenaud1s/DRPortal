@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import StatCard, { IStatCardProps } from "./StatCard";
+import StatCard, { IStatCardProps } from "../StatCard";
 
 interface ITaskStatRowProps {
   stats: IStatCardProps[];

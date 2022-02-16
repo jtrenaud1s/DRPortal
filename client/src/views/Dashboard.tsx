@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Col, Row } from "react-bootstrap";
 import UserCommitteeSidebar from "../components/UserCommitteeSidebar";
-import TaskList from "../components/TaskList";
+import TaskList from "../components/tasks/TaskList";
 import TaskStatRow from "../components/TaskStatRow";
 import MainLayout from "../layout/MainLayout";
 import { Task } from "../models/task";
