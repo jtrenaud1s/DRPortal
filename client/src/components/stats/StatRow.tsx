@@ -1,12 +1,12 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import StatCard, { IStatCardProps } from "../StatCard";
+import StatCard, { IStatCardProps } from "./StatCard";
 
-interface ITaskStatRowProps {
+interface IStatRowProps {
   stats: IStatCardProps[];
 }
 
-const TaskStatRow = ({ stats }: ITaskStatRowProps) => {
+const StatRow = ({ stats }: IStatRowProps) => {
   return (
     <Row>
       {stats &&
@@ -19,4 +19,4 @@ const TaskStatRow = ({ stats }: ITaskStatRowProps) => {
   );
 };
 
-export default TaskStatRow;
+export default StatRow;

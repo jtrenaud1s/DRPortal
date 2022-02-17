@@ -10,7 +10,7 @@ import Axios from "./utils/axios";
 import { Spinner } from "react-bootstrap";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import CommitteeListView from "./views/committees/CommitteeListView";
-import DashboardView from "./views/Dashboard";
+import DashboardView from "./views/DashboardView";
 
 function App() {
   const dispatch = useAppDispatch();
