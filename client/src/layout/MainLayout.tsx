@@ -9,12 +9,12 @@ interface IMainLayoutProps {
 
 const MainLayout: React.FC<IMainLayoutProps> = ({ children, title }) => {
   return (
-    <>
+    <div className="h-100">
       <Header />
       {title && <h1>{title}</h1>}
       <Container>{children}</Container>
       <Footer />
-    </>
+    </div>
   );
 };
 

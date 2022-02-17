@@ -16,11 +16,13 @@ const MainLayoutWithToolbar: React.FC<IMainLayoutWithToolbarProps> = ({
 }) => {
   return (
     <>
-      <Header />
-      <Toolbar>{toolbarContent}</Toolbar>
-      {title && <h1>{title}</h1>}
-      <Container>{children}</Container>
-      <Footer />
+      <div className="h-100">
+        <Header />
+        {toolbarContent && <Toolbar>{toolbarContent}</Toolbar>}
+        {title && <h1>{title}</h1>}
+        <Container>{children}</Container>
+        <Footer />
+      </div>
     </>
   );
 };

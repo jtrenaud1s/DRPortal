@@ -11,48 +11,48 @@ import { Spinner } from "react-bootstrap";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import CommitteeListView from "./views/committees/CommitteeListView";
 import DashboardView from "./views/DashboardView";
+import UserListView from "./views/users/UserListView";
+import EditUserView from "./views/users/EditUserView";
+import UserDetailView from "./views/users/UserDetailView";
 
 function App() {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
-  
-
-
   useEffect(() => {
-const refresh = () => {
-  dispatch(refreshPending());
+    const refresh = () => {
+      dispatch(refreshPending());
 
-  const refreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = localStorage.getItem("refresh_token");
 
-  if (refreshToken === null) {
-    console.log("Refresh token is not available");
-    dispatch(refreshFailed(""));
-    setLoading(false);
-  } else {
-    const tokenParts: JwtPayload = jwt_decode(refreshToken);
-    const now = Math.ceil(Date.now() / 1000);
+      if (refreshToken === null) {
+        console.log("Refresh token is not available");
+        dispatch(refreshFailed(""));
+        setLoading(false);
+      } else {
+        const tokenParts: JwtPayload = jwt_decode(refreshToken);
+        const now = Math.ceil(Date.now() / 1000);
 
-    if (tokenParts.exp! > now) {
-      Axios.post("/auth/refresh/", { refresh: refreshToken })
-        .then((response) => {
-          dispatch(refreshSuccess(response.data.access));
+        if (tokenParts.exp! > now) {
+          Axios.post("/auth/refresh/", { refresh: refreshToken })
+            .then((response) => {
+              dispatch(refreshSuccess(response.data.access));
+              setLoading(false);
+            })
+            .catch((err) => {
+              console.log(err);
+              dispatch(refreshFailed(err));
+              setLoading(false);
+            });
+        } else {
+          console.log("Refresh token is expired", tokenParts.exp, now);
+          dispatch(refreshFailed("You've been signed out due to inactivity"));
           setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          dispatch(refreshFailed(err));
-          setLoading(false);
-        });
-    } else {
-      console.log("Refresh token is expired", tokenParts.exp, now);
-      dispatch(refreshFailed("You've been signed out due to inactivity"));
-      setLoading(false);
-    }
-  }
-};
+        }
+      }
+    };
 
-    refresh()
+    refresh();
   }, [dispatch]);
 
   return (
@@ -92,10 +92,66 @@ const refresh = () => {
             }
           />
           <Route
+            path="/committees/create"
+            element={
+              <Protect>
+                <CommitteeListView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/committees/:id"
+            element={
+              <Protect>
+                <CommitteeListView />
+              </Protect>
+            }
+          />
+          <Route
             path="/tasks"
             element={
               <Protect>
                 <TaskListView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/tasks/:id"
+            element={
+              <Protect>
+                <TaskListView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/tasks/:id/edit"
+            element={
+              <Protect>
+                <TaskListView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <Protect>
+                <UserListView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/users/:id"
+            element={
+              <Protect>
+                <UserDetailView />
+              </Protect>
+            }
+          />
+          <Route
+            path="/users/:id/edit"
+            element={
+              <Protect>
+                <EditUserView />
               </Protect>
             }
           />

@@ -23,6 +23,9 @@ const NavLinks = () => {
       <Nav.Link as={NavLink} to="/committees">
         Committees
       </Nav.Link>
+      <Nav.Link as={NavLink} to="/users">
+        Users
+      </Nav.Link>
       <NavDropdown
         title={user.first_name + " " + user.last_name}
         id="user-dropdown">
