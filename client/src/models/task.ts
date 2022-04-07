@@ -9,5 +9,8 @@ export interface Task {
   created: Date;
   updated: Date;
   assignees: User[];
-  committee: Committee
+  committee: Committee;
+  due_date: Date;
+  status: string;
+  priority: string;
 }

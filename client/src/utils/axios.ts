@@ -79,7 +79,7 @@ Axios.interceptors.response.use(
           return Axios.post("/auth/refresh/", { refresh: refreshToken })
             .then((response) => {
               store!.dispatch(refreshSuccess(response.data.access));
-              originalRequest.defaults.headers.common["Authorization"] =
+              originalRequest.headers.common["Authorization"] =
                 "JWT " + response.data.access;
 
               return Axios(originalRequest);

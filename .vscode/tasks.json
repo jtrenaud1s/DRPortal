@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "command": "node",
+  "type": "shell",
+  "args": ["./node_modules/typescript/bin/tsc", "-p", "."],
+  "options": {
+            "cwd": "${workspaceFolder}/client"
+    },
+  "presentation": {
+    "reveal": "silent"
+  },
+  "problemMatcher": "$tsc"
+}

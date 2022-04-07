@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -84,6 +83,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]
+
+    ORDERING = ['initiation_number']
 
     class Meta:
         verbose_name = "User"

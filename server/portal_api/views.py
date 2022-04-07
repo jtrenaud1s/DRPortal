@@ -7,11 +7,16 @@ from portal_auth.models import User
 from portal_auth.permissions import IsSelf
 from portal_auth.serializers import UserSerializer
 from .serializers import CommitteeSerializer, TaskSerializer
+from django_filters import rest_framework as filters
+
 
 
 class TaskViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('assignees', 'committee')
 
     def get_permissions(self):
         permission_classes = []
@@ -31,6 +36,9 @@ class TaskViewSet(ModelViewSet):
 class CommitteeViewSet(ModelViewSet):
     queryset = Committee.objects.all()
     serializer_class = CommitteeSerializer
+
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('head', 'members')
 
     def get_permissions(self):
         permission_classes = []

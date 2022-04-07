@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Button } from "react-bootstrap";
 import TaskList from "../../components/tasks/TaskList";
-import { useFetchAllTasksQuery } from "../../services/apiService";
+import { useFetchAllTasksQuery } from "../../services/taskService";
 import Loadscreen from "../../components/Loadscreen";
 import { LinkContainer } from "react-router-bootstrap";
 import MainLayoutWithToolbar from "../../layout/MainLayoutWithToolbar";

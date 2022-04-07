@@ -6,7 +6,7 @@ import StatRow from "../components/stats/StatRow";
 import MainLayout from "../layout/MainLayout";
 import { Task } from "../models/task";
 import { User } from "../models/user";
-import { useFetchAllTasksQuery } from "../services/apiService";
+import { useFetchAllTasksQuery } from "../services/taskService";
 import { useAppSelector } from "../store";
 import Loadscreen from "../components/Loadscreen";
 
@@ -18,11 +18,15 @@ const DashboardView = () => {
     task.assignees.map((assignee) => assignee.id).includes(user.id!)
   ) as Task[];
 
+  const openTasks = tasks?.filter((task) => task.status === "Open") as Task[];
+  const incompleteTasks = tasks?.filter((task) => task.status !== "Completed")
+  const overdueTasks = tasks?.filter(task => task.due_date && new Date(task.due_date) < new Date()) as Task[];
+
   const stats = [
     { title: "All Tasks", value: tasks?.length },
     { title: "Your Tasks", value: userTasks?.length },
-    { title: "Open Tasks", value: tasks?.length },
-    { title: "Overdue Tasks", value: tasks?.length },
+    { title: "Open Tasks", value: openTasks?.length },
+    { title: "Overdue Tasks", value: overdueTasks?.length },
   ];
 
   if (isLoading) return <Loadscreen />;
@@ -47,10 +51,10 @@ const DashboardView = () => {
               <TaskList tasks={tasks || []} />
             </Tab>
             <Tab eventKey="incompleteTasks" title="Incomplete Tasks">
-              <TaskList tasks={tasks || []} />
+              <TaskList tasks={incompleteTasks || []} />
             </Tab>
-            <Tab eventKey="completedTasks" title="Completed Tasks">
-              <TaskList tasks={tasks || []} />
+            <Tab eventKey="overdueTasks" title="Overdue Tasks">
+              <TaskList tasks={overdueTasks || []} />
             </Tab>
           </Tabs>
         </Col>

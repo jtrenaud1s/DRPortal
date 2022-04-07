@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert} from "react-bootstrap";
-import { useFetchAllUsersQuery } from "../../services/apiService";
+import { useFetchAllUsersQuery } from "../../services/userService";
 import MainLayoutWithToolbar from "../../layout/MainLayoutWithToolbar";
 import Loadscreen from "../../components/Loadscreen";
 import UserList from "../../components/users/UserList";

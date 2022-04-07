@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Button } from "react-bootstrap";
 import {
   useFetchAllCommitteesQuery,
-} from "../../services/apiService";
+} from "../../services/committeeService";
 import CommitteeList from "../../components/committees/CommitteeList";
 import MainLayoutWithToolbar from "../../layout/MainLayoutWithToolbar";
 import { LinkContainer } from "react-router-bootstrap";
@@ -27,7 +27,6 @@ const CommitteeListView = () => {
   return (
     <MainLayoutWithToolbar toolbarContent={newCommitteeButton}>
       {error && <Alert>{`${error}`}</Alert>}
-
       <CommitteeList committees={committees || []} />
     </MainLayoutWithToolbar>
   );

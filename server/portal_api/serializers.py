@@ -17,6 +17,8 @@ class CommitteeSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source='get_status_display')
+    priority = serializers.CharField(source='get_priority_display')
 
     def to_representation(self, instance: Task):
         response = super().to_representation(instance)
