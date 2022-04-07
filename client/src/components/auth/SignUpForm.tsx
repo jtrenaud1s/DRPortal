@@ -7,9 +7,12 @@ import {
   Form,
   InputGroup,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { UserWithPassword } from "../../types";
+import { signupFailed, signupPending, signupSuccess } from "../../features/auth";
+import { UserWithPassword } from "../../models/user";
+import { useAppDispatch, useAppSelector } from "../../store";
 import Axios from "../../utils/axios";
 
 const SignUpForm = () => {
@@ -19,27 +22,32 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [working, setWorking] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [initiationNumber, setInitiationNumber] = useState(0)
+  const working = useAppSelector((state) => state.auth.isLoading);
+  const message = useAppSelector((state) => state.auth.error);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    dispatch(signupPending());
     if (password !== confirmPassword) {
-      setMessage("Passwords must match");
+      dispatch(signupFailed("Passwords must match"));
       return;
     }
 
-    setWorking(true);
     const user: UserWithPassword = {
       email: email,
       username: username,
       password: password,
       first_name: firstName,
       last_name: lastName,
+      initiation_number: initiationNumber,
     };
+
     const response = await Axios.post("auth/register/", user);
+
     if (response.status === 201) {
-      setWorking(false);
+      dispatch(signupSuccess());
       navigate("/signin");
     }
   };
@@ -128,6 +136,13 @@ const SignUpForm = () => {
                     placeholder="Last Name"
                     required
                   />
+                  <Form.Control
+                    type="number"
+                    onChange={(e) => setInitiationNumber(+e.target.value)}
+                    value={lastName}
+                    placeholder="Last Name"
+                    required
+                  />
                 </InputGroup>
               </Form.Group>
             </Col>
@@ -139,14 +154,16 @@ const SignUpForm = () => {
                 className="w-100"
                 type="submit"
                 variant="primary">
-                Sign Up
+                {working && <Spinner size="sm" animation="border" />} Sign Up
               </Button>
             </Col>
           </Row>
         </Form>
-        <small className="text-muted">
-          Already have an account? <Link to="/signin">Sign In</Link>
-        </small>
+        <div className="text-center mt-2">
+          <small className="text-muted">
+            Already have an account? <Link to="/signin">Sign In</Link>
+          </small>
+        </div>
       </Card.Body>
     </Card>
   );

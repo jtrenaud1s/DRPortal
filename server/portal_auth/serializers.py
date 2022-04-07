@@ -8,6 +8,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         exclude = ['password']
 
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
 
 class RegisterUserSerializer(serializers.ModelSerializer):
 

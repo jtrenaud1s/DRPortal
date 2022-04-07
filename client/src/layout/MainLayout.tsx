@@ -1,17 +1,19 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import Footer from "./Footer";
 import Header from "./Header";
 
 interface IMainLayoutProps {
-    title?: string
+  title?: string;
 }
 
 const MainLayout: React.FC<IMainLayoutProps> = ({ children, title }) => {
   return (
-    <div>
+    <div className="h-100">
       <Header />
-      { title && <h1>{title}</h1> }
+      {title && <h1>{title}</h1>}
       <Container>{children}</Container>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import SignUpForm from "../../features/auth/SignUpForm";
+import SignUpForm from "../../components/auth/SignUpForm";
 import FullscreenCenteredLayout from "../../layout/FullscreenCenteredLayout";
 
 const SignUpView = () => {

@@ -1,0 +1,34 @@
+{
+  "restoreTerminals.terminals": [
+
+    {
+      "splitTerminals": [
+        {
+          "name": "Server",
+          "commands": ["cd server", "source /home/jtrenaud1s/.local/share/virtualenvs/server-qFGqSkQX/bin/activate", "python manage.py runserver"]
+        },
+        {
+          "name": "Client",
+          "commands": ["cd client", "yarn start"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "Server",
+          "commands": ["cd server", "source /home/jtrenaud1s/.local/share/virtualenvs/server-qFGqSkQX/bin/activate", "clear"]
+        },
+        {
+          "name": "Client",
+          "commands": ["cd client","clear"]
+        }
+      ]
+    }
+  ],
+    "python.pythonPath": "~/.local/share/virtualenvs/server-qFGqSkQX/bin/python",
+    "python.analysis.indexing": true,
+    "[python]": {
+      "editor.formatOnPaste": false
+    }
+}

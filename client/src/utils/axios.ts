@@ -1,10 +1,12 @@
-import axios from "axios";
+import { BaseQueryFn } from "@reduxjs/toolkit/dist/query/react";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import {
   refreshFailed,
   refreshPending,
   refreshSuccess,
 } from "../features/auth";
 import { StoreType } from "../store";
+import jwt_decode, { JwtPayload } from 'jwt-decode'
 
 const baseURL = "http://localhost:8000/api/";
 
@@ -26,11 +28,8 @@ const Axios = axios.create({
 Axios.interceptors.request.use(
   (config) => {
     if (store!.getState().auth.accessToken) {
-      console.log("request interceptor: add token to headers");
       config.headers!["Authorization"] =
         "JWT " + store!.getState().auth.accessToken;
-    } else {
-      console.log("No access token available")
     }
     return config;
   },
@@ -71,16 +70,16 @@ Axios.interceptors.response.use(
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (refreshToken) {
-        const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
+        const tokenParts: JwtPayload = jwt_decode(refreshToken)
 
         const now = Math.ceil(Date.now() / 1000);
 
-        if (tokenParts.exp > now) {
+        if (tokenParts.exp! > now) {
           store!.dispatch(refreshPending());
           return Axios.post("/auth/refresh/", { refresh: refreshToken })
             .then((response) => {
               store!.dispatch(refreshSuccess(response.data.access));
-              originalRequest.defaults.headers.common["Authorization"] =
+              originalRequest.headers.common["Authorization"] =
                 "JWT " + response.data.access;
 
               return Axios(originalRequest);
@@ -91,17 +90,45 @@ Axios.interceptors.response.use(
             });
         } else {
           console.log("Refresh token is expired", tokenParts.exp, now);
-          store!.dispatch(refreshFailed("Refresh Token Expired"));
+          store!.dispatch(
+            refreshFailed("You've been signed out due to inactivity")
+          );
           window.location.href = "/login/";
         }
       } else {
         console.log("Refresh token is not available");
-        store!.dispatch(refreshFailed("Refresh Token Non-existant"));
+        store!.dispatch(refreshFailed("Please Sign In"));
         window.location.href = "/login/";
       }
     }
     return Promise.reject(error);
   }
 );
+
+export const axiosBaseQuery =
+  (
+    { baseUrl }: { baseUrl: string } = { baseUrl: "" }
+  ): BaseQueryFn<
+    {
+      url: string;
+      method: AxiosRequestConfig["method"];
+      data?: AxiosRequestConfig["data"];
+    },
+    unknown,
+    unknown
+  > =>
+  async ({ url, method, data }) => {
+    try {
+      const result = await Axios({ url: baseUrl + url, method, data });
+      return { data: result.data };
+    } catch (axiosError) {
+      let err = axiosError as AxiosError;
+      return {
+        error: { status: err.response?.status, data: err.response?.data },
+      };
+    }
+  };
+
+
 
 export default Axios;
